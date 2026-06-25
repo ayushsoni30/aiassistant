@@ -3,7 +3,7 @@ import React from 'react'
 function Signin() {
   return (
     <div>
-      Sign in Page // 1.7
+      Sign in Page 
     </div>
   )
 }
