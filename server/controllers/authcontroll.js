@@ -1,5 +1,9 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
+const genToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+}
 export const signUp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -8,10 +12,10 @@ export const signUp = async (req, res) => {
     if (existEmail) {
       return res.status(400).json({ message: "email already exists !!" });
     }
-    if (password.lenth < 8) {
+    if (password.length < 8) {
       return res
         .status(400)
-        .json({ message: "pass must be at least 6 character" });
+        .json({ message: "pass must be at least 8 character" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     // user created
@@ -23,7 +27,7 @@ export const signUp = async (req, res) => {
 
     const token = await genToken(user._id);
     res.cookie("token", token, {
-      httOnly: true,
+      httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
       secure: false,
@@ -42,13 +46,13 @@ export const Login = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "email does not  exists !!" });
     }
-    const isMtch = await bcrypt.compare(passsword, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(400).json({ message: "incorrect password" });
 
     const token = await genToken(user._id);
     res.cookie("token", token, {
-      httOnly: true,
+      httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
       secure: false,

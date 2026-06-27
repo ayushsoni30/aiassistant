@@ -4,3 +4,4 @@ server/.env
 node_modules/
 server/node_modules/
 client/node_modules/
+.tldr
