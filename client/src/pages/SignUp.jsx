@@ -3,14 +3,6 @@ import bg from "../assets/image.png";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-
-
-
-
-
-
-
-
 function SignUp() {
   
 
