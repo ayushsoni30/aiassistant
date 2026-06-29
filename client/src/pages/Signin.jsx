@@ -16,14 +16,17 @@ const [email, setemail] = useState("")
 const [pswrd, setpswrd] = useState("")
 const {serverUrl} =useContext(userDataContext)
 const [err, seterr] = useState("")
+const [loading, setloading] = useState(false)
 const handleSingin = async(e)=>{
   e.preventDefault()
   seterr("")
+  setloading(true)
   try {
     let result = await axios.post(`${serverUrl}/api/auth/signin`,{ email ,password: pswrd},{withCredentials:true})
     console.log(result)
+    setloading(false)
   } catch (error) {
-
+    setloading(false)
     console.log("Error:",error)
     seterr(error.response.data.message)
     
@@ -69,7 +72,7 @@ const handleSingin = async(e)=>{
     {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
   </button>
 </div>
-        <button className=" mt-5 min-w-80 h-15  bg-white rounded-4xl text-3xl font-bold text-green-500 border-2 border-green-500">Sign in</button>
+        <button className=" mt-5 min-w-80 h-15  bg-white rounded-4xl text-3xl font-bold text-green-500 border-2 border-green-500" disabled={loading}>{loading?"loading..":"Sign In"}</button>
         <p className="text-white text-xl mt-10 cursor-pointer" onClick={()=>navigate("/signup")}>Want To Create A New Account ?<span className="text-green-500"> Sign Up</span></p>
       </form>
     </div>

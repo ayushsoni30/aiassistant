@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 const genToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 }
-export const signUp = async (req, res) => {
+export const csignUp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     // checking mail already exist?
