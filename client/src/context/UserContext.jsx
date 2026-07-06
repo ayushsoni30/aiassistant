@@ -1,40 +1,44 @@
+import React, { useState, useEffect, createContext } from "react";
+import axios from "axios";
 
-import React,{ useState , useEffect ,createContext} from 'react'
-import axios from 'axios'
-export const userDataContext = createContext()
-const UserContext = ({children}) => {
-    const serverUrl="http://localhost:8000"
-    const [userData,setUserData]=useState(null)
-    const handleCurrentUser=async()=>{
-      try{
-        const result = await axios.get(`${serverUrl}/api/user/current`, {withCredentials: true})
-        console.log("Fetched current user data:", result.data);
-        setUserData(result.data);
-        console.log("Current user data:", result.data);
-      }catch(err){
-        console.error("Error fetching current user:");
-        
-      }
+export const userDataContext = createContext();
+
+const UserContext = ({ children }) => {
+
+  const serverUrl = "http://localhost:8000";
+  const [userData, setUserData] = useState(null);
+
+  const handleCurrentUser = async () => {
+    try {
+      const result = await axios.get(
+        `${serverUrl}/api/user/current`,
+        { withCredentials: true }
+      );
+
+      console.log("Fetched current user data:", result.data);
+
+      setUserData(result.data);
+
+    } catch (err) {
+      console.error(err.response?.data || err.message);
     }
-    useEffect(()=>{
-      handleCurrentUser()
-   
-    },[])
-   
-useEffect(()=>{
-  console.log("User data in context:", userData);
-},[userData]) 
-    
-    const value={
-        serverUrl,
-        userData
-    }
+  };
+
+  useEffect(() => {
+    handleCurrentUser();
+  }, []);
+
+  const value = {
+    serverUrl,
+    userData,
+    setUserData
+  };
+
   return (
-    
-        <userDataContext.Provider value={value}>
+    <userDataContext.Provider value={value}>
       {children}
-      </userDataContext.Provider>
-   
-  )
-}
-export default UserContext
+    </userDataContext.Provider>
+  );
+};
+
+export default UserContext;

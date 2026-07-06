@@ -15,7 +15,7 @@ function SignUp() {
 const [name, setname] = useState("")
 const [email, setemail] = useState("")
 const [pswrd, setpswrd] = useState("")
-const {serverUrl} =useContext(userDataContext)
+const {serverUrl, userData,setUserData} =useContext(userDataContext)
 const [err, seterr] = useState("")
 const [loading, setloading] = useState(false)
 const handleSingUp = async(e)=>{
@@ -24,11 +24,13 @@ const handleSingUp = async(e)=>{
   setloading(true)
   try {
     let result = await axios.post(`${serverUrl}/api/auth/signup`,{name , email ,password: pswrd},{withCredentials:true})
-    console.log(result)
+    setUserData(result.data)
      setloading(false)
+     navigate("/customize")
   } catch (error) {
      
     console.log("Error:",error)
+    setUserData(null)
      setloading(false)
     seterr(error.response.data.message)
     

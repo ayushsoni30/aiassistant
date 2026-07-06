@@ -1,20 +1,32 @@
+import jwt from "jsonwebtoken";
 
-//checking weather user is authorize or not
-import jwt from "jsonwebtoken"
-const isAuth = async (req,res,next)=>{
-    try {
-       const token=req.cookies.token
-        if(!token){
-            return res.status(400).json({message:"token not found"})
-        }
+const isAuth = async (req, res, next) => {
+  try {
 
-        const verifyToken=await jwt.verify(token,process.env.JWT_TOKEN)
-        req.userId=verifyToken.userId
+    const token = req.cookies.token;
 
-        next()
-
-    } catch (error) {
-        console.log("ERROR of isAuth",error)
+    if (!token) {
+      return res.status(400).json({
+        message: "token not found"
+      });
     }
-}
-export default isAuth
+
+    const verifyToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    req.userId = verifyToken.id;
+
+    next();
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(401).json({
+      message: "invalid token"
+    });
+  }
+};
+
+export default isAuth;

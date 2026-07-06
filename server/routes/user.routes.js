@@ -5,7 +5,7 @@ import  isAuth from "../middleware/isauth.js"
 // taking only router function from express
 const userRouter=express.Router() 
 
-userRouter.get("/Current",isAuth ,getCurrentUser)
+userRouter.get("/current",isAuth ,getCurrentUser)
 
 
 export default userRouter

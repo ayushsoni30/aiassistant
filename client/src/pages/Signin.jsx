@@ -25,6 +25,7 @@ const handleSingin = async(e)=>{
     let result = await axios.post(`${serverUrl}/api/auth/signin`,{ email ,password: pswrd},{withCredentials:true})
     console.log(result)
     setloading(false)
+    navigate("/")
   } catch (error) {
     setloading(false)
     console.log("Error:",error)
