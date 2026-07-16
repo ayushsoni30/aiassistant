@@ -94,7 +94,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "2:07"
+									"text": "2:31"
 								}
 							]
 						}
@@ -130,8 +130,8 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 719.2000122070312,
-				"h": 465.6000061035156
+				"w": 892.9398193359375,
+				"h": 273.7268371582031
 			},
 			"insets": [
 				false,
@@ -146,7 +146,7 @@
 			"isChatting": false,
 			"highlightedUserIds": [],
 			"isFocused": true,
-			"devicePixelRatio": 1.25,
+			"devicePixelRatio": 1.7280000448226929,
 			"isCoarsePointer": false,
 			"isHoveringCanvas": true,
 			"openMenus": [],
@@ -175,8 +175,8 @@
 			"typeName": "instance_page_state"
 		},
 		{
-			"x": 94.9999885559082,
-			"y": 28.466659545898438,
+			"x": 269.46989822387695,
+			"y": 36.53007507324219,
 			"z": 1,
 			"meta": {},
 			"id": "camera:page:page",
