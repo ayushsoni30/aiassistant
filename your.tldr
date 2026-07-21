@@ -35,26 +35,12 @@
 	},
 	"records": [
 		{
-			"gridSize": 10,
-			"name": "",
+			"x": 0,
+			"y": 0,
+			"lastActivityTimestamp": 0,
 			"meta": {},
-			"id": "document:document",
-			"typeName": "document"
-		},
-		{
-			"meta": {},
-			"id": "page:page",
-			"name": "Page 1",
-			"index": "a1",
-			"typeName": "page"
-		},
-		{
-			"name": "",
-			"color": "#9D5BD2",
-			"imageUrl": "",
-			"meta": {},
-			"id": "user:Iue749mp7MiSbk2aiSpFS",
-			"typeName": "user"
+			"id": "pointer:pointer",
+			"typeName": "pointer"
 		},
 		{
 			"x": 63.333335876464844,
@@ -94,7 +80,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "2:31"
+									"text": "2:47"
 								}
 							]
 						}
@@ -106,12 +92,103 @@
 			"typeName": "shape"
 		},
 		{
-			"x": 0,
-			"y": 0,
-			"lastActivityTimestamp": 0,
+			"x": -280.5737419128418,
+			"y": 12.5186767578125,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
 			"meta": {},
-			"id": "pointer:pointer",
-			"typeName": "pointer"
+			"id": "shape:GuVJh1Gi8eRmylygRv71q",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 344.9344482421875,
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1,
+				"richText": {
+					"type": "doc",
+					"attrs": {
+						"dir": "auto"
+					},
+					"content": [
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "customize----- avtar "
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "                       button(next)"
+								}
+							]
+						}
+					]
+				}
+			},
+			"parentId": "page:page",
+			"index": "a2oof",
+			"typeName": "shape"
+		},
+		{
+			"x": 380.63884353637695,
+			"y": 103.83331298828125,
+			"z": 1,
+			"meta": {},
+			"id": "camera:page:page",
+			"typeName": "camera"
+		},
+		{
+			"name": "",
+			"color": "#9D5BD2",
+			"imageUrl": "",
+			"meta": {},
+			"id": "user:Iue749mp7MiSbk2aiSpFS",
+			"typeName": "user"
+		},
+		{
+			"editingShapeId": "shape:l6c6d3K7VS2PtPLUzCVvz",
+			"croppingShapeId": null,
+			"selectedShapeIds": [
+				"shape:l6c6d3K7VS2PtPLUzCVvz"
+			],
+			"hoveredShapeId": "shape:l6c6d3K7VS2PtPLUzCVvz",
+			"erasingShapeIds": [],
+			"hintingShapeIds": [],
+			"focusedGroupId": null,
+			"meta": {},
+			"id": "instance_page_state:page:page",
+			"pageId": "page:page",
+			"typeName": "instance_page_state"
+		},
+		{
+			"meta": {},
+			"id": "page:page",
+			"name": "Page 1",
+			"index": "a1",
+			"typeName": "page"
+		},
+		{
+			"gridSize": 10,
+			"name": "",
+			"meta": {},
+			"id": "document:document",
+			"typeName": "document"
 		},
 		{
 			"followingUserId": null,
@@ -130,8 +207,8 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 892.9398193359375,
-				"h": 273.7268371582031
+				"w": 1115.2777099609375,
+				"h": 408.33331298828125
 			},
 			"insets": [
 				false,
@@ -146,7 +223,7 @@
 			"isChatting": false,
 			"highlightedUserIds": [],
 			"isFocused": true,
-			"devicePixelRatio": 1.7280000448226929,
+			"devicePixelRatio": 1.440000057220459,
 			"isCoarsePointer": false,
 			"isHoveringCanvas": true,
 			"openMenus": [],
@@ -158,29 +235,6 @@
 			"id": "instance:instance",
 			"currentPageId": "page:page",
 			"typeName": "instance"
-		},
-		{
-			"editingShapeId": "shape:l6c6d3K7VS2PtPLUzCVvz",
-			"croppingShapeId": null,
-			"selectedShapeIds": [
-				"shape:l6c6d3K7VS2PtPLUzCVvz"
-			],
-			"hoveredShapeId": "shape:l6c6d3K7VS2PtPLUzCVvz",
-			"erasingShapeIds": [],
-			"hintingShapeIds": [],
-			"focusedGroupId": null,
-			"meta": {},
-			"id": "instance_page_state:page:page",
-			"pageId": "page:page",
-			"typeName": "instance_page_state"
-		},
-		{
-			"x": 269.46989822387695,
-			"y": 36.53007507324219,
-			"z": 1,
-			"meta": {},
-			"id": "camera:page:page",
-			"typeName": "camera"
 		}
 	]
 }
