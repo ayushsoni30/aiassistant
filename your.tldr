@@ -21,7 +21,7 @@
 			"com.tldraw.shape.text": 4,
 			"com.tldraw.shape.bookmark": 2,
 			"com.tldraw.shape.draw": 5,
-			"com.tldraw.shape.geo": 11,
+			"com.tldraw.shape.geo": 12,
 			"com.tldraw.shape.note": 13,
 			"com.tldraw.shape.line": 5,
 			"com.tldraw.shape.frame": 1,
@@ -80,12 +80,14 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "2:47"
+									"text": "3:06"
 								}
 							]
 						}
 					]
-				}
+				},
+				"flipX": false,
+				"flipY": false
 			},
 			"parentId": "page:page",
 			"index": "a1zGa",
@@ -146,8 +148,8 @@
 			"typeName": "shape"
 		},
 		{
-			"x": 380.63884353637695,
-			"y": 103.83331298828125,
+			"x": 685.7868404388428,
+			"y": 292.323974609375,
 			"z": 1,
 			"meta": {},
 			"id": "camera:page:page",
@@ -207,8 +209,8 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 1115.2777099609375,
-				"h": 408.33331298828125
+				"w": 1381.6666259765625,
+				"h": 745.8333129882812
 			},
 			"insets": [
 				false,
@@ -223,9 +225,9 @@
 			"isChatting": false,
 			"highlightedUserIds": [],
 			"isFocused": true,
-			"devicePixelRatio": 1.440000057220459,
+			"devicePixelRatio": 1.2000000476837158,
 			"isCoarsePointer": false,
-			"isHoveringCanvas": true,
+			"isHoveringCanvas": null,
 			"openMenus": [],
 			"isChangingStyle": false,
 			"isReadonly": false,

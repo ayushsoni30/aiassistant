@@ -66,14 +66,14 @@ const handleSingin = async(e)=>{
 *{err}
   </p>}
   <button
-    type="button"
+    type="button" 
     onClick={() => setShowPassword(!showPassword)}
     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white"
   >
     {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
   </button>
 </div>
-        <button className=" mt-5 min-w-80 h-15  bg-white rounded-4xl text-3xl font-bold text-blue-500 border-2 border-blue-500" disabled={loading}>{loading?"loading..":"Sign In"}</button>
+        <button className=" mt-5 min-w-80 h-15  bg-white rounded-4xl text-3xl font-bold text-blue-500 border-2 border-blue-500" disabled={loading}>{loading?"loading..":"Sign In"} </button>
         
         <p className="text-white text-xl mt-10 cursor-pointer" onClick={()=>navigate("/signup")}>Want To Create A New Account ?<span className="text-blue-500"> Sign Up</span></p>
       </form>
