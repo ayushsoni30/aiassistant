@@ -125,6 +125,24 @@ const parseSystemCommand = (prompt, assistantName, userName) => {
     };
   }
 
+  // Stop and Exit commands
+  if (
+    clean.includes("stop listening") ||
+    clean.includes("stop listen") ||
+    clean === "stop" ||
+    clean === "exit" ||
+    clean === "shut down" ||
+    clean === "shut up" ||
+    clean === "sleep" ||
+    clean === "bye" ||
+    clean === "goodbye"
+  ) {
+    return {
+      reply: "Listening mode paused. Click the microphone anytime you wish to speak again.",
+      action: { type: "stop_listening" },
+    };
+  }
+
   return null;
 };
 
@@ -182,7 +200,7 @@ export const askAssistant = async (req, res) => {
       // 2. Use Google Gemini if API Key configured
       try {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({model: "gemini-3.5-flash"});
 
         // Retrieve last 6 conversation turns for continuity
         const recentHistory = (user.history || []).slice(-6).map((msg) => ({

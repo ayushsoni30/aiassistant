@@ -48,9 +48,35 @@ const Home = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [activeAction, setActiveAction] = useState(null);
   const [speechSupported, setSpeechSupported] = useState(true);
+  const [isContinuousListening, setIsContinuousListening] = useState(false);
 
   const recognitionRef = useRef(null);
   const chatEndRef = useRef(null);
+  const isContinuousListeningRef = useRef(false);
+  const statusRef = useRef("idle");
+
+  useEffect(() => {
+    statusRef.current = status;
+  }, [status]);
+
+  const isStopCommand = (str) => {
+    if (!str) return false;
+    const c = str.toLowerCase().trim();
+    return (
+      c.includes("stop listening") ||
+      c.includes("stop listen") ||
+      c === "stop" ||
+      c === "exit" ||
+      c === "shut down" ||
+      c === "shut up" ||
+      c === "sleep" ||
+      c === "bye" ||
+      c === "goodbye" ||
+      c.includes("stop mic") ||
+      c.includes("turn off mic") ||
+      c === "pause"
+    );
+  };
 
   // Load conversation history on mount
   useEffect(() => {
@@ -85,7 +111,7 @@ const Home = () => {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.continuous = false;
+    recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "en-US";
 
@@ -101,9 +127,23 @@ const Home = () => {
       }
       setTranscript(current);
 
-      if (event.results[0].isFinal) {
+      if (event.results[event.results.length - 1].isFinal) {
         const finalQuery = current.trim();
         if (finalQuery) {
+          if (isStopCommand(finalQuery)) {
+            // User requested to stop listening via voice
+            isContinuousListeningRef.current = false;
+            setIsContinuousListening(false);
+            try {
+              recognition.stop();
+            } catch (e) {}
+            setStatus("idle");
+            const stopMsg =
+              "Listening mode stopped. Click the microphone whenever you want to talk again.";
+            setLatestAssistantResponse(stopMsg);
+            speakResponse(stopMsg, false);
+            return;
+          }
           handleSendPrompt(finalQuery);
         }
       }
@@ -111,26 +151,72 @@ const Home = () => {
 
     recognition.onerror = (event) => {
       console.error("Speech recognition error:", event.error);
-      setStatus("idle");
+      if (event.error === "no-speech") {
+        return; // Silent pause; continue listening
+      }
+      if (event.error === "not-allowed") {
+        isContinuousListeningRef.current = false;
+        setIsContinuousListening(false);
+        setStatus("idle");
+        alert(
+          "Microphone permission denied. Please allow microphone access in your browser settings."
+        );
+      }
     };
 
     recognition.onend = () => {
-      // If we weren't transitioning to processing, return to idle
-      setStatus((prev) => (prev === "listening" ? "idle" : prev));
+      // If continuous mode is on and we are not speaking or processing, restart recognition seamlessly
+      if (
+        isContinuousListeningRef.current &&
+        statusRef.current !== "speaking" &&
+        statusRef.current !== "processing"
+      ) {
+        setTimeout(() => {
+          if (
+            isContinuousListeningRef.current &&
+            statusRef.current !== "speaking" &&
+            statusRef.current !== "processing"
+          ) {
+            try {
+              recognition.start();
+              setStatus("listening");
+            } catch (e) {}
+          }
+        }, 200);
+      } else if (statusRef.current === "listening") {
+        setStatus("idle");
+      }
     };
 
     recognitionRef.current = recognition;
 
     return () => {
-      recognition.abort();
+      isContinuousListeningRef.current = false;
+      try {
+        recognition.abort();
+      } catch (e) {}
       window.speechSynthesis?.cancel();
     };
   }, []);
 
+  const resumeListening = () => {
+    setTimeout(() => {
+      if (isContinuousListeningRef.current) {
+        try {
+          recognitionRef.current?.start();
+          setStatus("listening");
+        } catch (e) {}
+      }
+    }, 350);
+  };
+
   // Text to Speech
-  const speakResponse = (text) => {
+  const speakResponse = (text, shouldResumeListening = false) => {
     if (isMuted || !("speechSynthesis" in window)) {
       setStatus("idle");
+      if (shouldResumeListening && isContinuousListeningRef.current) {
+        resumeListening();
+      }
       return;
     }
 
@@ -151,26 +237,48 @@ const Home = () => {
     if (naturalVoice) utterance.voice = naturalVoice;
 
     utterance.onstart = () => setStatus("speaking");
-    utterance.onend = () => setStatus("idle");
-    utterance.onerror = () => setStatus("idle");
+    utterance.onend = () => {
+      setStatus("idle");
+      if (shouldResumeListening && isContinuousListeningRef.current) {
+        resumeListening();
+      }
+    };
+    utterance.onerror = () => {
+      setStatus("idle");
+      if (shouldResumeListening && isContinuousListeningRef.current) {
+        resumeListening();
+      }
+    };
 
     window.speechSynthesis.speak(utterance);
   };
 
-  // Toggle voice listening
+  // Toggle voice listening (Mouse Click Handler)
   const toggleListening = () => {
     if (!speechSupported) {
-      alert("Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+      alert(
+        "Speech recognition is not supported in this browser. Please use Chrome or Edge."
+      );
       return;
     }
 
-    if (status === "listening") {
-      recognitionRef.current?.stop();
+    if (isContinuousListeningRef.current || status === "listening") {
+      // User clicked with mouse to stop!
+      isContinuousListeningRef.current = false;
+      setIsContinuousListening(false);
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
+      window.speechSynthesis?.cancel();
       setStatus("idle");
     } else {
+      // User clicked with mouse to start continuous listening!
+      isContinuousListeningRef.current = true;
+      setIsContinuousListening(true);
       window.speechSynthesis?.cancel();
       try {
         recognitionRef.current?.start();
+        setStatus("listening");
       } catch (err) {
         console.error("Error starting recognition:", err);
       }
@@ -182,11 +290,30 @@ const Home = () => {
     const text = (promptToSend || inputPrompt).trim();
     if (!text) return;
 
+    if (isStopCommand(text)) {
+      isContinuousListeningRef.current = false;
+      setIsContinuousListening(false);
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
+      setStatus("idle");
+      const stopMsg =
+        "Listening mode stopped. Click the microphone whenever you want to talk again.";
+      setLatestAssistantResponse(stopMsg);
+      speakResponse(stopMsg, false);
+      return;
+    }
+
     setInputPrompt("");
     setTranscript("");
     setLatestUserPrompt(text);
     setStatus("processing");
     setActiveAction(null);
+
+    // Pause recognition while thinking and speaking to avoid self-echo
+    try {
+      recognitionRef.current?.abort();
+    } catch (e) {}
 
     // Optimistic user entry in local history
     const tempUserMsg = { role: "user", content: text, timestamp: new Date() };
@@ -217,16 +344,15 @@ const Home = () => {
         window.open(action.url, "_blank");
       }
 
-      // Speak response aloud
-      speakResponse(reply);
+      // Speak response aloud, and resume continuous listening if active
+      speakResponse(reply, isContinuousListeningRef.current);
     } catch (err) {
       console.error("Failed to query assistant:", err);
       const fallbackError =
         err.response?.data?.message ||
         "I had trouble processing that request. Please try again.";
       setLatestAssistantResponse(fallbackError);
-      speakResponse(fallbackError);
-      setStatus("idle");
+      speakResponse(fallbackError, isContinuousListeningRef.current);
     }
   };
 
@@ -502,6 +628,14 @@ const Home = () => {
             </button>
           ))}
         </div>
+
+        {/* Continuous Listening Active Indicator */}
+        {isContinuousListening && (
+          <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 text-xs font-semibold shadow-lg shadow-cyan-500/10">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>Mic Open &bull; Say &quot;stop listening&quot; or click mic to exit</span>
+          </div>
+        )}
 
         {/* Input Bar & Big Mic Button */}
         <div className="w-full flex items-center gap-3">
