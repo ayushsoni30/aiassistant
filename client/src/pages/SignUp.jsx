@@ -3,40 +3,39 @@ import bg from "../assets/image.png";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { userDataContext } from "../context/userContext";
-import axios from "axios"
-
-
+import { userDataContext } from "../context/UserContext";
+import axios from "axios";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
-  // help in to navigate already signin to the signup page
   const navigate = useNavigate();
-const [name, setname] = useState("")
-const [email, setemail] = useState("")
-const [pswrd, setpswrd] = useState("")
-const {serverUrl, userData,setUserData} =useContext(userDataContext)
-const [err, seterr] = useState("")
-const [loading, setloading] = useState(false)
-const handleSingUp = async(e)=>{
-  e.preventDefault()
-  seterr("")
-  setloading(true)
-  try {
-    let result = await axios.post(`${serverUrl}/api/auth/signup`,{name , email ,password: pswrd},{withCredentials:true})
-    setUserData(result.data)
-     setloading(false)
-     navigate("/customize")
-  } catch (error) {
-     
-    console.log("Error:",error)
-    setUserData(null)
-     setloading(false)
-    seterr(error.response.data.message)
-    
-  }
-  
-} 
+  const [name, setname] = useState("");
+  const [email, setemail] = useState("");
+  const [pswrd, setpswrd] = useState("");
+  const { serverUrl, userData, setUserData } = useContext(userDataContext);
+  const [err, seterr] = useState("");
+  const [loading, setloading] = useState(false);
+
+  const handleSingUp = async (e) => {
+    e.preventDefault();
+    seterr("");
+    setloading(true);
+    try {
+      const result = await axios.post(
+        `${serverUrl}/api/auth/signup`,
+        { name, email, password: pswrd },
+        { withCredentials: true }
+      );
+      setUserData(result.data);
+      setloading(false);
+      navigate("/customize");
+    } catch (error) {
+      console.log("Error:", error);
+      setUserData(null);
+      setloading(false);
+      seterr(error.response?.data?.message || "Sign up failed");
+    }
+  }; 
   return (
     
     <div className="relative w-full h-screen overflow-hidden flex justify-center items-center ">

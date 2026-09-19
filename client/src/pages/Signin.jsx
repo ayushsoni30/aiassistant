@@ -3,37 +3,37 @@ import bg from "../assets/image.png";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { userDataContext } from "../context/userContext";
-import axios from "axios"
-
-
+import { userDataContext } from "../context/UserContext";
+import axios from "axios";
 
 function Signin() {
   const [showPassword, setShowPassword] = useState(false);
-  // help in to navigate already signin to the signup page
   const navigate = useNavigate();
-const [email, setemail] = useState("")
-const [pswrd, setpswrd] = useState("")
-const {serverUrl} =useContext(userDataContext)
-const [err, seterr] = useState("")
-const [loading, setloading] = useState(false)
-const handleSingin = async(e)=>{
-  e.preventDefault()
-  seterr("")
-  setloading(true)
-  try {
-    let result = await axios.post(`${serverUrl}/api/auth/signin`,{ email ,password: pswrd},{withCredentials:true})
-    console.log(result)
-    setloading(false)
-    navigate("/")
-  } catch (error) {
-    setloading(false)
-    console.log("Error:",error)
-    seterr(error.response.data.message)
-    
-  }
-  
-} 
+  const [email, setemail] = useState("");
+  const [pswrd, setpswrd] = useState("");
+  const { serverUrl, setUserData } = useContext(userDataContext);
+  const [err, seterr] = useState("");
+  const [loading, setloading] = useState(false);
+
+  const handleSingin = async (e) => {
+    e.preventDefault();
+    seterr("");
+    setloading(true);
+    try {
+      const result = await axios.post(
+        `${serverUrl}/api/auth/signin`,
+        { email, password: pswrd },
+        { withCredentials: true }
+      );
+      setUserData(result.data);
+      setloading(false);
+      navigate("/");
+    } catch (error) {
+      setloading(false);
+      console.log("Error:", error);
+      seterr(error.response?.data?.message || "Sign in failed");
+    }
+  }; 
   return (
     
     <div className="relative w-full h-screen overflow-hidden flex justify-center items-center ">

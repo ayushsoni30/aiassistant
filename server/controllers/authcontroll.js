@@ -32,7 +32,9 @@ export const signUp = async (req, res) => {
       sameSite: "strict",
       secure: false,
     });
-    return res.status(201).json(user);
+    const userObj = user.toObject();
+    delete userObj.password;
+    return res.status(201).json(userObj);
   } catch (error) {
     return res.status(500).json({ message: `sign up error` });
   }
@@ -44,7 +46,7 @@ export const Login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "email does not  exists !!" });
+      return res.status(400).json({ message: "email does not exists !!" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
@@ -57,7 +59,9 @@ export const Login = async (req, res) => {
       sameSite: "strict",
       secure: false,
     });
-    return res.status(200).json(user);
+    const userObj = user.toObject();
+    delete userObj.password;
+    return res.status(200).json(userObj);
   } catch (error) {
     return res.status(500).json({ message: `login error` });
   }
