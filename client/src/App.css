@@ -1,0 +1,77 @@
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+}
+
+@keyframes pulse-fast {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.8));
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 35px rgba(96, 165, 250, 1));
+  }
+}
+
+@keyframes wave-bar {
+  0%, 100% {
+    height: 8px;
+  }
+  50% {
+    height: 36px;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-pulse-fast {
+  animation: pulse-fast 1.5s ease-in-out infinite;
+}
+
+.animate-wave-1 {
+  animation: wave-bar 1.2s ease-in-out infinite;
+}
+
+.animate-wave-2 {
+  animation: wave-bar 0.9s ease-in-out 0.2s infinite;
+}
+
+.animate-wave-3 {
+  animation: wave-bar 1.4s ease-in-out 0.4s infinite;
+}
+
+.animate-wave-4 {
+  animation: wave-bar 1s ease-in-out 0.1s infinite;
+}
+
+.animate-wave-5 {
+  animation: wave-bar 1.3s ease-in-out 0.3s infinite;
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.8);
+}
